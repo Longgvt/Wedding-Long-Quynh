@@ -663,7 +663,7 @@ function sendRSVP(){
     method:'POST',
     mode:'no-cors',
     headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({name,side,guests,wish})
+    body:JSON.stringify({name, side, guests, wish})
   })
   .then(()=>{
     document.getElementById('rsvp-fields').style.display='none';
