@@ -690,11 +690,13 @@ window.addEventListener('load',()=>{
 });
 
 /* MUSIC PLAYER */
-let ytPlayer=null,ytReady=false,playing=false;
-const tag=document.createElement('script');tag.src='https://www.youtube.com/iframe_api';document.head.appendChild(tag);
-window.onYouTubeIframeAPIReady=()=>{ytPlayer=new YT.Player('yt-frame',{events:{onReady:()=>ytReady=true}});}
-function toggleMusic(p){if(!ytReady)return;if(p){ytPlayer.playVideo();document.querySelector('.mwave').classList.remove('paused');}else{ytPlayer.pauseVideo();document.querySelector('.mwave').classList.add('paused');}playing=p;}
-document.getElementById('music-btn').addEventListener('click',()=>toggleMusic(!playing));
+const audio = new Audio('Beautiful In White.mp3');
+audio.loop = true; audio.volume = 0.5;
+// Phát sau khi user bấm mở thiệp (trong openEnvelope):
+// audio.play();
+document.getElementById('music-btn').onclick = () => {
+  audio.paused ? audio.play() : audio.pause();
+};
 
 /* PHONG BÌ MỞ THƯ */
 function openEnvelope(){
