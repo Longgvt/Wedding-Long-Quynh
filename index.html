@@ -645,42 +645,35 @@ lbEl.addEventListener('click',e=>e.target===lbEl && closeLB());
 /* RSVP & QR MODAL & COPY */
 let side='';function pickSide(el,v){document.querySelectorAll('.rl').forEach(l=>l.classList.remove('sel'));el.classList.add('sel');side=v;}
 /* Tìm đến hàm sendRSVP và thay thế toàn bộ bằng đoạn này */
-function sendRSVP() {
-  const name = document.getElementById('r-name').value;
-  const guests = document.getElementById('r-guests').value;
-  const wish = document.getElementById('r-wish').value;
-  
-  if (!name || !side || !guests) {
-    alert('Vui lòng điền đầy đủ tên, chọn nhà và số người tham dự!');
+function sendRSVP(){
+  const name=document.getElementById('r-name').value.trim();
+  const guests=document.getElementById('r-guests').value;
+  const wish=document.getElementById('r-wish').value.trim();
+  if(!name||!side||!guests){
+    alert('Vui lòng điền đầy đủ tên, chọn nhà và số người!');
     return;
   }
+  const btn=document.querySelector('.sbtn');
+  btn.textContent='ĐANG GỬI...';
+  btn.disabled=true;
 
-  // THAY LINK APPS SCRIPT CỦA BẠN VÀO ĐÂY
-  const scriptURL = 'https://script.google.com/macros/s/AKfycbxqFg9Pjz1Z6Wfd1GBOJzh4Gs9FFCnq84el_Y6VINUZjsGGEgEXMjXv8WtYgMojHEMl/exec';
+  const SHEETS_URL='https://script.google.com/macros/s/AKfycbxqFg9Pjz1Z6Wfd1GBOJzh4Gs9FFCnq84el_Y6VINUZjsGGEgEXMjXv8WtYgMojHEMl/exec';
 
-  // Hiệu ứng đang gửi (tùy chọn)
-  const btn = document.querySelector('.sbtn');
-  btn.textContent = 'ĐANG GỬI...';
-  btn.disabled = true;
-
-  const data = new FormData();
-  data.append('name', name);
-  data.append('side', side);
-  data.append('guests', guests);
-  data.append('wish', wish);
-
-  fetch(scriptURL, { method: 'POST', body: data })
-    .then(response => {
-      // Sau khi gửi thành công, ẩn form và hiện lời cảm ơn
-      document.getElementById('rsvp-fields').style.display = 'none';
-      document.getElementById('ty-msg').classList.add('show');
-    })
-    .catch(error => {
-      console.error('Lỗi!', error.message);
-      alert('Có lỗi xảy ra, vui lòng thử lại sau!');
-      btn.textContent = 'Gửi Xác Nhận ✦';
-      btn.disabled = false;
-    });
+  fetch(SHEETS_URL,{
+    method:'POST',
+    mode:'no-cors',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({name,side,guests,wish})
+  })
+  .then(()=>{
+    document.getElementById('rsvp-fields').style.display='none';
+    document.getElementById('ty-msg').classList.add('show');
+  })
+  .catch(()=>{
+    alert('Có lỗi, vui lòng thử lại!');
+    btn.textContent='Gửi Xác Nhận ✦';
+    btn.disabled=false;
+  });
 }
 function openQRModal(src,name){const modal=document.getElementById('qr-modal'),img=document.getElementById('qr-modal-img');img.src=src;document.getElementById('qr-modal-name').textContent=name;modal.classList.add('open');}
 function closeQRModal(){document.getElementById('qr-modal').classList.remove('open');}
