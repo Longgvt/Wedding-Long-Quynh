@@ -703,7 +703,15 @@ function openEnvelope(){
   const hy=document.getElementById('env-hy');hy.style.transition='opacity .3s,transform .3s';hy.style.opacity='0';hy.style.transform='translate(-50%,-50%) scale(0.6)';
   document.getElementById('env-flap').classList.add('open');
   setTimeout(()=>{document.getElementById('env-content').classList.add('show');},600);
-  setTimeout(()=>{const ov=document.getElementById('envelope-overlay');ov.classList.add('closing');setTimeout(()=>{ov.style.display='none';toggleMusic(true);},1000);},3000);
+  setTimeout(()=>{
+  const ov=document.getElementById('envelope-overlay');
+  ov.classList.add('closing');
+  setTimeout(()=>{
+    ov.style.display='none';
+    // Phát nhạc ngay sau khi đóng phong bì
+    toggleMusic(true);
+  },1000);
+},3000);
 }
 </script>
 </body>
