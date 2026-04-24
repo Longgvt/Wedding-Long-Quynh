@@ -134,8 +134,9 @@ body{
 .cd-unit{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--red-muted)}
 
 /* ══ TRANG 4 — CHƯƠNG TRÌNH ═════════════════ */
-#p4{background:var(--cream);gap:100px;justify-content:center;padding:24px 20px;}
+#p4{background:var(--cream);gap:16px;justify-content:center;padding:24px 20px;}
 .info-grid{
+  display:flex;flex-direction:column;gap:25px;
   width:100%;max-width:460px;
 }
 @media(max-width:400px){.info-grid{grid-template-columns:1fr;gap:6px}}
@@ -160,8 +161,9 @@ body{
 .invite-banner strong{font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(12px,3.2vw,15px);color:var(--text-mid);display:block;margin-top:3px}
 
 /* ══ TRANG 4b — NHÂN VẬT CHÍNH ══════════════ */
-#p4b{background:var(--cream);gap:30px;justify-content:center;padding:24px 20px;}
+#p4b{background:var(--cream);gap:16px;justify-content:center;padding:24px 20px;}
 .avatar-grid{
+  display:flex;flex-direction:column;gap:25px;
   width:100%;max-width:440px;
 }
 .acard{
@@ -688,27 +690,38 @@ window.addEventListener('load',()=>{
 
 /* MUSIC PLAYER */
 const audio = new Audio('Beautiful In White.mp3');
-audio.loop = true; audio.volume = 0.5;
-// Phát sau khi user bấm mở thiệp (trong openEnvelope):
-// audio.play();
+audio.loop = true;
+audio.volume = 0.5;
+
+function playMusic(){
+  audio.play().catch(()=>{});
+  document.querySelector('.mwave').classList.remove('paused');
+}
+function pauseMusic(){
+  audio.pause();
+  document.querySelector('.mwave').classList.add('paused');
+}
+
 document.getElementById('music-btn').onclick = () => {
-  audio.paused ? audio.play() : audio.pause();
+  audio.paused ? playMusic() : pauseMusic();
 };
 
 /* PHONG BÌ MỞ THƯ */
 function openEnvelope(){
-  const hy=document.getElementById('env-hy');hy.style.transition='opacity .3s,transform .3s';hy.style.opacity='0';hy.style.transform='translate(-50%,-50%) scale(0.6)';
+  /* Phát nhạc ngay khi bấm — user đã tương tác nên iOS cho phép */
+  playMusic();
+
+  const hy=document.getElementById('env-hy');
+  hy.style.transition='opacity .3s,transform .3s';
+  hy.style.opacity='0';
+  hy.style.transform='translate(-50%,-50%) scale(0.6)';
   document.getElementById('env-flap').classList.add('open');
   setTimeout(()=>{document.getElementById('env-content').classList.add('show');},600);
   setTimeout(()=>{
-  const ov=document.getElementById('envelope-overlay');
-  ov.classList.add('closing');
-  setTimeout(()=>{
-    ov.style.display='none';
-    // Phát nhạc ngay sau khi đóng phong bì
-    toggleMusic(true);
-  },1000);
-},3000);
+    const ov=document.getElementById('envelope-overlay');
+    ov.classList.add('closing');
+    setTimeout(()=>{ov.style.display='none';},1000);
+  },3000);
 }
 </script>
 </body>
