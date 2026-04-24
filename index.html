@@ -659,20 +659,23 @@ function sendRSVP(){
 
   const SHEETS_URL='https://script.google.com/macros/s/AKfycbxqFg9Pjz1Z6Wfd1GBOJzh4Gs9FFCnq84el_Y6VINUZjsGGEgEXMjXv8WtYgMojHEMl/exec';
 
+  // Gửi dạng URL params — luôn hoạt động với no-cors
+  const params=new URLSearchParams({name,side,guests,wish});
+
   fetch(SHEETS_URL,{
     method:'POST',
     mode:'no-cors',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({name, side, guests, wish})
+    headers:{'Content-Type':'application/x-www-form-urlencoded'},
+    body:params.toString()
   })
   .then(()=>{
     document.getElementById('rsvp-fields').style.display='none';
     document.getElementById('ty-msg').classList.add('show');
   })
   .catch(()=>{
-    alert('Có lỗi, vui lòng thử lại!');
     btn.textContent='Gửi Xác Nhận ✦';
     btn.disabled=false;
+    alert('Lỗi kết nối, thử lại!');
   });
 }
 function openQRModal(src,name){const modal=document.getElementById('qr-modal'),img=document.getElementById('qr-modal-img');img.src=src;document.getElementById('qr-modal-name').textContent=name;modal.classList.add('open');}
