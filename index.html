@@ -700,6 +700,7 @@ document.getElementById('music-btn').onclick = () => {
 
 /* PHONG BÌ MỞ THƯ */
 function openEnvelope(){
+  toggleMusic(true);
   const hy=document.getElementById('env-hy');hy.style.transition='opacity .3s,transform .3s';hy.style.opacity='0';hy.style.transform='translate(-50%,-50%) scale(0.6)';
   document.getElementById('env-flap').classList.add('open');
   setTimeout(()=>{document.getElementById('env-content').classList.add('show');},600);
